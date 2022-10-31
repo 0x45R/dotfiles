@@ -97,7 +97,7 @@ def setup_groups(groups = []):
 groups = setup_groups()
 
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=0, margin=[10,10,10,10])
+    layout.Columns(border_normal=PYWAL_COLORS["special"]["background"],border_focus=PYWAL_COLORS["special"]["foreground"], border_width=4, margin=[10,10,10,10])
 ]
 
 widget_defaults = dict(
