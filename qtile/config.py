@@ -120,7 +120,7 @@ def setup_top_bar():
     widgets = [
         modify(customwidgets.Button, default_text="", function=subprocess.Popen, function_args=['sh',app_launcher]),      
         widget.Spacer(length=10, background="#FFFF0000", decorations=[]),
-        widget.GroupBox(highlight_method="line", padding = 10, borderwidth=4, disable_drag=True),
+        widget.GroupBox(highlight_method="text", padding = 10, borderwidth=4, disable_drag=True),
         widget.Spacer(background="#FFFF0000", decorations=[]),
         widget.Mpris2(display_metadata=["xesam:title", "xesam:artist"]),
         widget.Spacer(background="#FFFF0000", decorations=[]),
@@ -137,7 +137,7 @@ def setup_bottom_bar():
     widgets = [
         widget.TextBox("- Steam wishlist widget coming soon... -", padding=0),
         widget.Spacer(background="#FF000000", decorations=[]),
-        widget.Systray(padding=10),
+        widget.Systray(padding=10, icon_size=20),
         widget.Spacer(length=10, background="#FF000000", decorations=[]),
         widget.QuickExit(padding=10, default_text="", countdown_format="{}", countdown_start=6),
     ]
