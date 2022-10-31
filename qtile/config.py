@@ -12,6 +12,7 @@ PYWAL_COLORS = json.load(open(pywal.settings.CACHE_DIR+"/colors.json","rb"))
 
 terminal_application = guess_terminal()
 web_browser_application = "librewolf"
+app_launcher = os.path.expanduser('~/.config/qtile/scripts/app_launcher.sh')
 
 amount_of_workspaces = 6
 
@@ -66,7 +67,7 @@ def setup_keys(keys = []):
     application_keybindings = [
         Key([SUPER], "Return", lazy.spawn(terminal_application), desc="Launch terminal"),
         Key([SUPER, "Shift"], "w", lazy.spawn(web_browser_application), desc="Launch web browser"),
-        Key([SUPER], "d", run_script_path('~/.config/qtile/scripts/app_launcher.sh'), desc="Launch rofi")
+        Key([SUPER], "d", run_script_path(app_launcher), desc="Launch rofi")
     ]
     keys.extend(application_keybindings)
     return keys
@@ -112,7 +113,7 @@ extension_defaults = widget_defaults.copy()
 
 def setup_top_bar():
     widgets = [
-        modify(customwidgets.Button, default_text=""),      
+        modify(customwidgets.Button, default_text="", function=subprocess.Popen, function_args=['sh',app_launcher]),      
         widget.Spacer(length=10, background="#FFFF0000", decorations=[]),
         widget.GroupBox(highlight_method="line", padding = 10),
         widget.Spacer(background="#FFFF0000", decorations=[]),
