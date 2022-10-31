@@ -97,7 +97,12 @@ def setup_groups(groups = []):
 groups = setup_groups()
 
 layouts = [
-    layout.Columns(border_normal=PYWAL_COLORS["special"]["background"],border_focus=PYWAL_COLORS["special"]["foreground"], border_width=4, margin=[10,10,10,10])
+    layout.Columns(
+        border_normal=PYWAL_COLORS["special"]["background"],
+        border_focus=PYWAL_COLORS["special"]["foreground"], 
+        border_width=4, 
+        margin=[10,10,10,10]
+    )
 ]
 
 widget_defaults = dict(
@@ -115,7 +120,7 @@ def setup_top_bar():
     widgets = [
         modify(customwidgets.Button, default_text="", function=subprocess.Popen, function_args=['sh',app_launcher]),      
         widget.Spacer(length=10, background="#FFFF0000", decorations=[]),
-        widget.GroupBox(highlight_method="line", padding = 10),
+        widget.GroupBox(highlight_method="line", padding = 10, borderwidth=4, disable_drag=True),
         widget.Spacer(background="#FFFF0000", decorations=[]),
         widget.Mpris2(display_metadata=["xesam:title", "xesam:artist"]),
         widget.Spacer(background="#FFFF0000", decorations=[]),
@@ -125,7 +130,7 @@ def setup_top_bar():
         widget.Spacer(length=10, background="#FFFF0000", decorations=[]),
         widget.Clock(format=" %d.%m.%Y %a  %H:%M:%S", font="Inconsolata bold"),
     ]
-    result = bar.Bar(widgets=widgets, size=32, margin=[10,10,10,10], background="#FFFF0000") # PYWAL_COLORS["special"]["background"])
+    result = bar.Bar(widgets=widgets, size=32, margin=[10,10,10,10], background="#FFFF0000")
     return result
 
 def setup_bottom_bar():
@@ -159,6 +164,9 @@ bring_front_click = False
 cursor_warp = False
 
 floating_layout = layout.Floating(
+    border_normal=PYWAL_COLORS["special"]["background"],
+    border_focus=PYWAL_COLORS["special"]["foreground"], 
+    border_width=4, 
     float_rules=[
         *layout.Floating.default_float_rules,
         Match(wm_class="confirmreset"),  # gitk
