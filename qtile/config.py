@@ -121,7 +121,7 @@ def setup_top_bar():
     widgets = [
         modify(customwidgets.Button, default_text="", function=subprocess.Popen, function_args=['sh',app_launcher]),      
         widget.Spacer(length=10, background="#FFFF0000", decorations=[]),
-        widget.GroupBox(highlight_method="text", padding = 10, borderwidth=4, disable_drag=True),
+        widget.GroupBox(highlight_method="text", padding = 10, borderwidth=4, disable_drag=True, this_current_screen_border=PYWAL_COLORS["special"]["foreground"], active=PYWAL_COLORS["colors"]["color6"],inactive=PYWAL_COLORS["colors"]["color1"]),
         widget.Spacer(background="#FFFF0000", decorations=[]),
         widget.Mpris2(display_metadata=["xesam:title", "xesam:artist"]),
         widget.Spacer(background="#FFFF0000", decorations=[]),
