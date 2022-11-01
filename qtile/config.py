@@ -67,7 +67,8 @@ def setup_keys(keys = []):
     application_keybindings = [
         Key([SUPER], "Return", lazy.spawn(terminal_application), desc="Launch terminal"),
         Key([SUPER, "Shift"], "w", lazy.spawn(web_browser_application), desc="Launch web browser"),
-        Key([SUPER], "d", run_script_path(app_launcher), desc="Launch rofi")
+        Key([SUPER], "d", run_script_path(app_launcher), desc="Launch rofi"),
+        Key([], "Print", lazy.spawn("scrot 'Screenshot_%a-%d%b%y_%H.%M.png' -e 'mv $f ~/Screenshots/'"))
     ]
     keys.extend(application_keybindings)
     return keys
