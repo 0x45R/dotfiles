@@ -136,11 +136,11 @@ def setup_top_bar():
 
 def setup_bottom_bar():
     widgets = [
-        widget.TextBox("- Steam wishlist widget coming soon... -", padding=0),
+        widget.TextBox("- Steam wishlist widget coming soon... -", padding=10, decorations=[]),
         widget.Spacer(background="#FF000000", decorations=[]),
-        widget.Systray(padding=10, icon_size=20),
+        widget.Systray(padding=10, icon_size=20, decorations=[]),
         widget.Spacer(length=10, background="#FF000000", decorations=[]),
-        widget.QuickExit(padding=10, default_text="", countdown_format="{}", countdown_start=6),
+        widget.QuickExit(padding=15, default_text="", countdown_format="{}", countdown_start=6),
     ]
     result = bar.Bar(widgets=widgets, size=20, margin=[10,10,10,10], background="#00000000", opacity=1)
     return result
