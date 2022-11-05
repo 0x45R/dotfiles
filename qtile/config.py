@@ -5,7 +5,7 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from qtile_extras import widget
 from qtile_extras.widget import modify
-from qtile_extras.widget.decorations import RectDecoration
+from qtile_extras.widget.decorations import RectDecoration, BorderDecoration
 
 SUPER, ALT = "mod4", "mod1"
 PYWAL_COLORS = json.load(open(pywal.settings.CACHE_DIR+"/colors.json","rb"))
@@ -102,17 +102,19 @@ layouts = [
         border_normal=PYWAL_COLORS["special"]["background"],
         border_focus=PYWAL_COLORS["special"]["foreground"], 
         border_width=4, 
-        margin=[10,10,10,10]
+        margin=[0,10,0,10]
     )
 ]
 
 widget_defaults = dict(
-    font="Inconsolata",
-    fontsize=14,
+    font="SauceCodePro Nerd Font",
+    fontsize=12,
+    border_width=4,
+    border_color=PYWAL_COLORS["special"]["foreground"],
     padding=20,
     foreground=PYWAL_COLORS["special"]["foreground"],
     decorations=[
-        RectDecoration(colour=PYWAL_COLORS["special"]["background"], radius=10, filled=True, padding_y=0)
+        RectDecoration(clip=True, colour=PYWAL_COLORS["special"]["background"], radius=15, filled=True, padding_y=0),
     ]
 )
 extension_defaults = widget_defaults.copy()
@@ -120,16 +122,16 @@ extension_defaults = widget_defaults.copy()
 def setup_top_bar():
     widgets = [
         modify(customwidgets.Button, default_text="", function=subprocess.Popen, function_args=['sh',app_launcher]),      
-        widget.Spacer(length=10, background="#FFFF0000", decorations=[]),
-        widget.GroupBox(highlight_method="text", padding = 10, borderwidth=4, disable_drag=True, this_current_screen_border=PYWAL_COLORS["special"]["foreground"], active=PYWAL_COLORS["colors"]["color6"],inactive=PYWAL_COLORS["colors"]["color1"]),
+        widget.Spacer(length=5, background="#FFFF0000", decorations=[]),
+        widget.GroupBox(highlight_method="line",highlight_color=['ff000000'], padding = 10, borderwidth=2, disable_drag=True, this_current_screen_border=PYWAL_COLORS["special"]["foreground"], active=PYWAL_COLORS["colors"]["color6"],inactive=PYWAL_COLORS["colors"]["color1"]),
         widget.Spacer(background="#FFFF0000", decorations=[]),
         widget.Mpris2(display_metadata=["xesam:title", "xesam:artist"]),
         widget.Spacer(background="#FFFF0000", decorations=[]),
-        widget.Net(format=' {interface}: {down} ↓↑ {up}'),
-        widget.Spacer(background="#FFFF0000", length=10, decorations=[]),
+        widget.Net(format='  {interface}: {down} ↓↑ {up}'),
+        widget.Spacer(background="#FFFF0000", length=5, decorations=[]),
         widget.DF(visible_on_warn=False, format=" {p} ({uf}{m}B, {r:.0f}%)"),
-        widget.Spacer(length=10, background="#FFFF0000", decorations=[]),
-        widget.Clock(format=" %d.%m.%Y %a  %H:%M:%S", font="Inconsolata bold"),
+        widget.Spacer(length=5, background="#FFFF0000", decorations=[]),
+        widget.Clock(format=" %d.%m.%Y %a  %H:%M:%S"),
     ]
     result = bar.Bar(widgets=widgets, size=32, margin=[10,10,10,10], background="#FFFF0000")
     return result
@@ -139,10 +141,10 @@ def setup_bottom_bar():
         widget.TextBox("- Steam wishlist widget coming soon... -", padding=10, decorations=[]),
         widget.Spacer(background="#FF000000", decorations=[]),
         widget.Systray(padding=10, icon_size=20, decorations=[]),
-        widget.Spacer(length=10, background="#FF000000", decorations=[]),
-        widget.QuickExit(padding=15, default_text="", countdown_format="{}", countdown_start=6),
+        widget.Spacer(length=5, background="#FF000000", decorations=[]),
+        widget.QuickExit(default_text="", countdown_format="{}", countdown_start=6),
     ]
-    result = bar.Bar(widgets=widgets, size=20, margin=[10,10,10,10], background="#00000000", opacity=1)
+    result = bar.Bar(widgets=widgets, size=32, margin=[10,10,10,10], background="#00000000", opacity=1)
     return result
 
 screens = [
