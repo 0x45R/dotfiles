@@ -102,7 +102,7 @@ layouts = [
         border_normal=PYWAL_COLORS["special"]["background"],
         border_focus=PYWAL_COLORS["special"]["foreground"], 
         border_width=4, 
-        margin=[0,10,0,10]
+        margin=[10,10,10,10]
     )
 ]
 
@@ -133,7 +133,7 @@ def setup_top_bar():
         widget.Spacer(length=5, background="#FFFF0000", decorations=[]),
         widget.Clock(format=" %d.%m.%Y %a  %H:%M:%S"),
     ]
-    result = bar.Bar(widgets=widgets, size=32, margin=[10,10,10,10], background="#FFFF0000")
+    result = bar.Bar(widgets=widgets, size=32, margin=[10,10,0,10], background="#FFFF0000")
     return result
 
 def setup_bottom_bar():
@@ -144,7 +144,7 @@ def setup_bottom_bar():
         widget.Spacer(length=5, background="#FF000000", decorations=[]),
         widget.QuickExit(default_text="", countdown_format="{}", countdown_start=6),
     ]
-    result = bar.Bar(widgets=widgets, size=32, margin=[10,10,10,10], background="#00000000", opacity=1)
+    result = bar.Bar(widgets=widgets, size=32, margin=[0,10,10,10], background="#00000000", opacity=1)
     return result
 
 screens = [
@@ -153,6 +153,10 @@ screens = [
         bottom = setup_bottom_bar()
     )
 ]
+
+def set_position_floating(self, x, y):
+    """Move window to x and y"""
+    self.tweak_float(x=x%10, y=y%10)
 
 mouse = [
     Drag([SUPER], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
@@ -187,4 +191,4 @@ reconfigure_screens = True
 auto_minimize = True
 wl_input_rules = None
 
-wmname = "LG3D"
+wmname = "qtile"
