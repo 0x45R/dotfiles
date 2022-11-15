@@ -1,5 +1,5 @@
 import pywal, json, os, subprocess, customwidgets
-from libqtile import bar, layout, widget, hook
+from libqtile import bar, layout, widget, hook, qtile
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
@@ -60,7 +60,10 @@ def setup_keys(keys = []):
 
         Key([SUPER], "space", lazy.window.toggle_floating(), desc="Toggle window floating"),
         Key([SUPER], "f", lazy.window.toggle_fullscreen(), desc="Toggle fullscreen"),
-        Key([SUPER], "Tab", lazy.next_layout(), desc="Toggle between layouts")
+        Key([SUPER], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
+        
+        Key([SUPER], "w", lazy.to_screen(0)),
+        Key([SUPER], "e", lazy.to_screen(1))
     ]
     keys.extend(window_keybindings)
 
@@ -125,7 +128,7 @@ def setup_top_bar():
         widget.Spacer(length=5, background="#FFFF0000", decorations=[]),
         widget.GroupBox(highlight_method="line",highlight_color=['ff000000'], padding = 10, borderwidth=2, disable_drag=True, this_current_screen_border=PYWAL_COLORS["special"]["foreground"], active=PYWAL_COLORS["colors"]["color6"],inactive=PYWAL_COLORS["colors"]["color1"]),
         widget.Spacer(background="#FFFF0000", decorations=[]),
-        widget.Mpris2(display_metadata=["xesam:title", "xesam:artist"]),
+        widget.Mpris2(name="spotify", display_metadata=["xesam:title", "xesam:artist"]),
         widget.Spacer(background="#FFFF0000", decorations=[]),
         widget.Net(format='  {interface}: {down} ↓↑ {up}'),
         widget.Spacer(background="#FFFF0000", length=5, decorations=[]),
@@ -153,10 +156,6 @@ screens = [
         bottom = setup_bottom_bar()
     )
 ]
-
-def set_position_floating(self, x, y):
-    """Move window to x and y"""
-    self.tweak_float(x=x%10, y=y%10)
 
 mouse = [
     Drag([SUPER], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
