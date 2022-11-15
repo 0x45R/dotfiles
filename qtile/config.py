@@ -91,7 +91,7 @@ def setup_groups(groups = []):
             Key(
                 [SUPER, "shift"],
                 i.name,
-                lazy.window.togroup(i.name, switch_group=True),
+                lazy.window.togroup(i.name, switch_group=False),
                 desc="Switch to & move focused window to group {}".format(i.name),
             ),
         ])
