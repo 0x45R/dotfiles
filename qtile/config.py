@@ -31,6 +31,10 @@ def setup_keys(keys = []):
         Key([SUPER, "shift"], "r", lazy.reload_config(), desc="Reload the config"),
         Key([SUPER, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
 
+        Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer -q set Master 5%+"), desc="Increase volume using XF86"),
+        Key([], "XF86AudioLowerVolume", lazy.spawn("amixer -q set Master 5%-"), desc="Decrease volume using XF86"),
+        Key([], "XF86AudioMute", lazy.spawn("amixer set Master toggle"), desc="Switch mute"),
+
         Key([SUPER], "l", lazy.spawn("dm-tool switch-to-greeter"), desc="Switch to greeter (lock)")
     ]
     keys.extend(system_keybindings)
