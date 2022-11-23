@@ -1,21 +1,11 @@
 {
-  "audio": "pipewire",
-  "bootloader": "systemd-bootctl",
   "custom-commands": [
     "cd /home/devel; git clone https://aur.archlinux.org/yay.git",
     "chown -R devel:devel /home/devel/yay"
   ],
-  "filesystem": "btrfs",
-  "harddrives": [
-    "/dev/nvme0n1"
-  ],
   "swap": true,
   "hostname": "archlinux",
-  "kernels": [
-    "linux"
-  ],
   "keyboard-language": "us",
-  "mirror-region": "Worldwide",
   "nic": {
     "type": "NM"
   },
