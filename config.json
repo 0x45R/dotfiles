@@ -21,6 +21,7 @@
     "neofetch",
     "wget",
     "curl",
+    "git",
     "gcc",
     "xdg-utils",
     "librewolf",
