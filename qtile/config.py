@@ -16,6 +16,61 @@ app_launcher = os.path.expanduser('~/.config/qtile/scripts/app_launcher.sh')
 
 amount_of_workspaces = 6
 
+class VolumeControl:
+    def __init__(self, id, name):
+        self.muted = False
+        self.id = id
+        self.name = name
+    @lazy.function
+    def change_volume(qtile,self,percentage):
+        subprocess.Popen(["amixer", "-D","pulse","set","Master",f"{abs(percentage)}%{'-' if percentage < 0 else '+'}"])
+        self.show_volume_notification()
+
+    def get_volume(self):
+        return subprocess.Popen("""awk -F"[][]" '/Left:/ { print $2 }' <(amixer -D pulse get Master) """,shell=True,stdout=subprocess.PIPE).stdout.read().decode().strip("%\n")
+  
+    def show_volume_notification(self):
+        subprocess.Popen(["notify-send",'-i',"audio-volume-high-symbolic",'-r',str(self.id),self.name,f"""{self.get_volume()}%"""])
+
+    @lazy.function
+    def toggle_mute(qtile, self):
+
+        subprocess.Popen(["amixer","-D","pulse","set","Master","1+","toggle"])
+        if self.muted:
+            self.muted = False
+        else:
+            self.muted = True
+        self.show_mute_notification()
+
+    def show_mute_notification(self):
+        if self.muted:
+            subprocess.Popen(["notify-send", "-i", "audio-volume-muted-symbolic","-r",str(self.id),self.name,"Muted"])
+        else:
+            subprocess.Popen(["notify-send", "-i", "audio-volume-high-symbolic","-r",str(self.id),self.name,"Unmuted"])
+
+class ScreenControl:
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
+
+        self.current_index = 0
+
+    @lazy.function
+    def switch_to_screen(qtile, self, index):
+        self.current_index = max(min(index, len(self.qtile.screens)-1), 0)
+        self.show_switch_notification()
+        qtile.cmd_to_screen(index)
+
+    @lazy.function
+    def cycle_screen(qtile, self,  index):
+        self.current_index += index
+        self.current_index = max(min(self.current_index, len(qtile.screens)-1), 0)
+        self.show_switch_notification()
+        qtile.cmd_to_screen(self.current_index)
+
+    def show_switch_notification( self):
+        subprocess.Popen(["notify-send", "Switched to screen index:", str(self.current_index),"-i","video-display" ,"-r", str(self.id)])
+
 @lazy.function
 def run_script_path(qtile,value):
     path = os.path.expanduser(value)
@@ -24,16 +79,18 @@ def run_script_path(qtile,value):
 @hook.subscribe.startup_complete
 def autostart():
     autostart_path = os.path.expanduser('~/.config/qtile/scripts/autostart.sh')
-    subprocess.Popen(["sh",autostart_path])
+    subprocess.Popen(autostart_path, shell=True)
+    pass
 
 def setup_keys(keys = []):
+    volume_control = VolumeControl(2137,"Volume Knob")
     system_keybindings = [
         Key([SUPER, "shift"], "r", lazy.reload_config(), desc="Reload the config"),
         Key([SUPER, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
 
-        Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer -q set Master 5%+"), desc="Increase volume using XF86"),
-        Key([], "XF86AudioLowerVolume", lazy.spawn("amixer -q set Master 5%-"), desc="Decrease volume using XF86"),
-        Key([], "XF86AudioMute", lazy.spawn("amixer set Master toggle"), desc="Switch mute"),
+        Key([], "XF86AudioRaiseVolume", volume_control.change_volume(volume_control, 5), desc="Increase volume using XF86"),
+        Key([], "XF86AudioLowerVolume", volume_control.change_volume(volume_control,-5), desc="Decrease volume using XF86"),
+        Key([], "XF86AudioMute", volume_control.toggle_mute(volume_control), desc="Switch mute"),
 
         Key([SUPER], "l", lazy.spawn("dm-tool switch-to-greeter"), desc="Switch to greeter (lock)")
     ]
@@ -46,7 +103,8 @@ def setup_keys(keys = []):
         Key([SUPER], "Up", lazy.layout.up(), desc="Move focus up")
     ]
     keys.extend(workspace_keybindings)
-
+    
+    screen_control = ScreenControl(2138, "Screen Control")
     window_keybindings = [
         Key([ALT], "Tab", lazy.layout.next(), desc="Move window focus to other window"),
         Key([ALT], "F4", lazy.window.kill()),
@@ -66,8 +124,8 @@ def setup_keys(keys = []):
         Key([SUPER], "f", lazy.window.toggle_fullscreen(), desc="Toggle fullscreen"),
         Key([SUPER], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
         
-        Key([SUPER], "w", lazy.to_screen(0)),
-        Key([SUPER], "e", lazy.to_screen(1))
+        Key([SUPER], "w", screen_control.cycle_screen(screen_control,1)),
+        Key([SUPER], "e", screen_control.cycle_screen(screen_control,-1))
     ]
     keys.extend(window_keybindings)
 
@@ -114,8 +172,8 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="SauceCodePro Nerd Font",
-    fontsize=12,
+    font="liberationmono",
+    fontsize=11,
     border_width=4,
     border_color=PYWAL_COLORS["special"]["foreground"],
     padding=20,
@@ -128,7 +186,7 @@ extension_defaults = widget_defaults.copy()
 
 def setup_top_bar():
     widgets = [
-        modify(customwidgets.Button, default_text="", function=subprocess.Popen, function_args=['sh',app_launcher]),      
+        modify(customwidgets.Button, default_text="R", function=subprocess.Popen, function_args=['sh',app_launcher]),      
         widget.Spacer(length=5, background="#FFFF0000", decorations=[]),
         widget.GroupBox(highlight_method="line",highlight_color=['ff000000'], padding = 10, borderwidth=2, disable_drag=True, this_current_screen_border=PYWAL_COLORS["special"]["foreground"], active=PYWAL_COLORS["colors"]["color6"],inactive=PYWAL_COLORS["colors"]["color1"]),
         widget.Spacer(background="#FFFF0000", decorations=[]),
@@ -145,7 +203,7 @@ def setup_top_bar():
 
 def setup_bottom_bar():
     widgets = [
-        widget.TextBox("- Steam wishlist widget coming soon... -", padding=10, decorations=[]),
+        widget.TextBox(" ", padding=10, decorations=[]),
         widget.Spacer(background="#FF000000", decorations=[]),
         widget.Systray(padding=10, icon_size=20, decorations=[]),
         widget.Spacer(length=5, background="#FF000000", decorations=[]),

@@ -1,9 +1,9 @@
 # Configuration for Alacritty, the GPU enhanced terminal emulator.
 import:
-  - ~/.cache/wal/color-alacritty.yml
+  - ~/.cache/wal/colors-alacritty.yml
 # Import additional configuration files
 #
-# Imports are loaded in order, skipping all missing files, with the importing
+# Imports are loaded i order, skipping all missing files, with the importing
 # file being loaded last. If a field is already present in a previous import, it
 # will be replaced.
 #
@@ -118,9 +118,9 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas^V^A4
-    family: sauce code pro nerd font
+    family: liberationmono
       # The `style` can be specified to pick a specific face.
-    style: regular #Regular
+    style: light #Regular
 
   # Bold font face
   #bold:
@@ -156,7 +156,7 @@ font:
     #style: Bold Italic
 
   # Point size
-  size: 11.0 #11.1
+  size: 9.0 #11.1
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
@@ -426,8 +426,8 @@ font:
 #   - (macOS) /bin/bash --login
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
-#shell:
-#  program: /bin/bash
+shell:
+  program: /bin/zsh
 #  args:
 #    - --login
 

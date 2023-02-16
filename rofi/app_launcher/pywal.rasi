@@ -1,5 +1,5 @@
 configuration {
-    font: "Iosevka Nerd Font 12";
+    font: "liberationmono 12";
     fixed-num-lines: true;
     show-icons: true;
     sidebar-mode: true;
@@ -10,7 +10,7 @@ configuration {
     display-drun: 					"";
 }
 
-@import "styles/pywal-colors.rasi"
+@import "./styles/pywal-colors.rasi"
 
 * {
     background-color:             	@bg;

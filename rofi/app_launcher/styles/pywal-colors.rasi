@@ -4,9 +4,10 @@
   bg:      @background;
   se:      @selected-active-foreground;
   fg:      @selected-active-background;
-  ac:      @color1;
-  red:     @color2;
-  green:   @color2;
+  ac:      @selected-active-background;
+  red:     @normal-background;
+  green:   @normal-background;
+  sel: blue;
   yellow:  @color2;
   blue:    @color3;
   purple:  @color2;
