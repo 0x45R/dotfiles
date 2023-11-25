@@ -1,4 +1,4 @@
-import pywal, json, os, subprocess, customwidgets
+import pywal, json, os, subprocess
 from libqtile import bar, layout, widget, hook, qtile
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
@@ -11,7 +11,7 @@ SUPER, ALT = "mod4", "mod1"
 PYWAL_COLORS = json.load(open(pywal.settings.CACHE_DIR+"/colors.json","rb"))
 
 terminal_application = guess_terminal()
-web_browser_application = "librewolf"
+web_browser_application = "firefox"
 app_launcher = os.path.expanduser('~/.config/qtile/scripts/app_launcher.sh')
 
 amount_of_workspaces = 6
@@ -76,7 +76,7 @@ def run_script_path(qtile,value):
     path = os.path.expanduser(value)
     subprocess.Popen(["sh", path])
 
-@hook.subscribe.startup_complete
+@hook.subscribe.startup_once
 def autostart():
     autostart_path = os.path.expanduser('~/.config/qtile/scripts/autostart.sh')
     subprocess.Popen(autostart_path, shell=True)
@@ -186,17 +186,17 @@ extension_defaults = widget_defaults.copy()
 
 def setup_top_bar():
     widgets = [
-        modify(customwidgets.Button, default_text="R", function=subprocess.Popen, function_args=['sh',app_launcher]),      
+             
         widget.Spacer(length=5, background="#FFFF0000", decorations=[]),
         widget.GroupBox(highlight_method="line",highlight_color=['ff000000'], padding = 10, borderwidth=2, disable_drag=True, this_current_screen_border=PYWAL_COLORS["special"]["foreground"], active=PYWAL_COLORS["colors"]["color6"],inactive=PYWAL_COLORS["colors"]["color1"]),
         widget.Spacer(background="#FFFF0000", decorations=[]),
         widget.Mpris2(name="spotify", display_metadata=["xesam:title", "xesam:artist"]),
         widget.Spacer(background="#FFFF0000", decorations=[]),
-        widget.Net(format='  {interface}: {down} ↓↑ {up}'),
+        widget.Net(format=' {interface}: {down} ↓↑ {up}'),
         widget.Spacer(background="#FFFF0000", length=5, decorations=[]),
-        widget.DF(visible_on_warn=False, format=" {p} ({uf}{m}B, {r:.0f}%)"),
+        widget.DF(visible_on_warn=False, format="{p} ({uf}{m}B, {r:.0f}%)"),
         widget.Spacer(length=5, background="#FFFF0000", decorations=[]),
-        widget.Clock(format=" %d.%m.%Y %a  %H:%M:%S"),
+        widget.Clock(format="%d.%m.%Y %a, %H:%M:%S"),
     ]
     result = bar.Bar(widgets=widgets, size=32, margin=[10,10,0,10], background="#FFFF0000")
     return result
@@ -207,7 +207,7 @@ def setup_bottom_bar():
         widget.Spacer(background="#FF000000", decorations=[]),
         widget.Systray(padding=10, icon_size=20, decorations=[]),
         widget.Spacer(length=5, background="#FF000000", decorations=[]),
-        widget.QuickExit(default_text="", countdown_format="{}", countdown_start=6),
+        widget.QuickExit(default_text="S", countdown_format="{}", countdown_start=6),
     ]
     result = bar.Bar(widgets=widgets, size=32, margin=[0,10,10,10], background="#00000000", opacity=1)
     return result
@@ -253,3 +253,4 @@ auto_minimize = True
 wl_input_rules = None
 
 wmname = "qtile"
+

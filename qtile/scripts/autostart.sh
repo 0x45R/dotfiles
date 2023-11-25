@@ -1,6 +1,9 @@
-xrandr --output DisplayPort-0 --noprimary --auto --left-of HDMI-A-0
-xrandr --output HDMI-A-0 --mode "1920x1080" --primary
+xrandr --output DP-1 --noprimary --auto --left-of HDMI-1
+xrandr --output HDMI-1 --mode "1920x1080" --primary
+wal -R
 picom &
-wal -R &
+blueman-tray &
+syncthing & 
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 setxkbmap -model pc104 -layout us,pl -variant ,, -option grp:alt_shift_toggle &
 
