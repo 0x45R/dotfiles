@@ -20,8 +20,9 @@ button selected{
 }
 scrollbar{
 background-color:#0f0f0f;
-handle-color:#2f2f2f;
-border-radius:10px;
+}
+scrollbar handle{
+background-color:red;
 }
 window{
 	width:24em;

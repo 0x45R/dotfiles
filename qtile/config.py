@@ -172,7 +172,7 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="liberationmono",
+    font="sourcecodepro",
     fontsize=11,
     border_width=4,
     border_color=PYWAL_COLORS["special"]["foreground"],
